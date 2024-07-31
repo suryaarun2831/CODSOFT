@@ -1,0 +1,435 @@
+:root {
+    --primary-color: #1e1e1e;
+    --primary-color-light: #333;
+    --accent-color: #ff6f61;
+    --bg-light: #f9f9f9;
+    --bg-dark: white;
+    --bg-gradient: linear-gradient(to right, #1e1e1e, #333);
+    --text-light: #f9f9f9;
+    --text-dark: #333;
+    --font-primary: 'Roboto', sans-serif;
+    --font-secondary: 'Montserrat', sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    font-family: var(--font-primary);
+}
+
+.header {
+    height: 80px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-light);
+    position: fixed;
+    z-index: 1000;
+    border-bottom: 0.5px solid grey;
+}
+.nav_logo p {
+    margin-left: 50px;
+    font-size: 30px;
+    font-family: var(--font-secondary);
+    font-family:cursive
+}
+.nav_logo p::first-letter
+{
+    color: blue;
+    font-size: 35px;
+}
+.nav_links {
+    margin-right: 80px;
+    display: flex;
+}
+
+.nav_links li {
+    list-style-type: none;
+    margin-right: 50px;
+}
+
+.nav_links li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 20px;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.nav_links li a:hover {
+    text-decoration: underline;
+    color: brown;
+}
+
+.Home,.about_section, .parts_section {
+    padding: 12rem 5rem;
+}
+.blog_section
+{
+    padding:8rem 5rem;
+}
+.cars_section
+{
+    padding: 8rem 5rem;
+}
+
+.home_div {
+    background-image: url('./car.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+}
+
+.Home h1 {
+    margin-bottom: 1rem;
+    font-size: 3rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.Home h4 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.home-btn
+{
+    color: white;
+    background-color:cornflowerblue;
+}
+.home-btn:hover
+{
+    background-color:yellowgreen;
+}
+button {
+    padding: 0.8rem 2rem;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--bg-white);
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 30px;
+    transition: background-color 0.5s ease;
+}
+
+button:hover {
+    background-color: var(--primary-color-light);
+}
+
+.cars_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.cars_list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.car_item {
+    padding: 1rem 1.5rem;
+    background-color: var(--bg-white);
+    border-radius: 15px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 350px;
+}
+.car_item:hover
+{
+    transition: .2s;
+    transform: scale(1.02);
+}
+
+.image_car_1, .image_car_2, .image_car_3 {
+    height: 200px;
+    width: 100%;
+    background-size: cover;
+    border-radius: 15px;
+}
+
+.image_car_1 {
+    background-image: url('./lamborghini.webp');
+}
+
+.image_car_2 {
+    background-image: url('./ferrari.webp');
+}
+
+.image_car_3 {
+    background-image: url('./toyato.avif');
+}
+
+.about_section p, .parts_header, .blog_header {
+    font-size: 18px;
+    line-height: 2rem;
+    margin-top: 1rem;
+}
+
+.parts_list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    font-family: cursive;
+}
+.btn
+{
+    color: white;
+}
+.part_item button
+{
+    color: white;
+    margin-top: 10px;
+}
+.part_item, .post_item {
+    padding: 1rem 1.5rem;
+    background-color: var(--bg-white);
+    border-radius: 15px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 280px;
+}
+
+.image_part_1 {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    border-radius: 15px;
+    background-image: url('./tires.webp');
+}
+
+.image_part_2 {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    border-radius: 15px;
+    background-image: url('./braking.webp'); 
+}
+
+.image_part_3
+{
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    border-radius: 15px;
+    background-image: url('./suspension.webp'); 
+}
+
+.image_post_1, .image_post_2, .image_post_3 {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    border-radius: 15px;
+}
+
+.part_item p, .post_item p {
+    margin-top: 1.5rem;
+    font-size: 16px;
+    line-height: 1.5rem;
+}
+
+.footer {
+    background-color: var(--primary-color-light);
+    color: var(--bg-white);
+    padding: 2rem 1rem;
+    justify-content: space-between;
+}
+#footer
+{
+    display: flex;
+    justify-content: space-around;
+    color: white;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.footer_des {
+    text-align: left;
+    display: block;
+    width: 300px;
+}
+
+.footer_des p {
+    margin-top: 1rem;
+    line-height: 1.5rem;
+}
+
+
+.blog_section h1, .cars_section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.blog_header, .blog_excerpt, .car_item p {
+    font-size: 1.1rem;
+    color: var(--text-color-light);
+    margin-bottom: 1rem;
+}
+
+.post_item h3, .car_item h3 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.post_item p, .car_item p {
+    font-size: 1rem;
+    line-height: 1.6rem;
+    color: var(--text-color);
+}
+
+.post_item .date {
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    margin-bottom: 1rem;
+}
+
+.blog_posts, .cars_list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.blog_posts .post_item, .cars_list .car_item {
+    width: calc(33% - 2rem);
+    background-color: var(--bg-white);
+    border-radius: 15px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.post_item:hover, .car_item:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+.post_item button, .car_item button {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.post_item button:hover, .car_item button:hover {
+    background-color: var(--primary-color-light);
+}
+
+.image_post_1, .image_post_2, .image_post_3 {
+    height: 150px;
+    background-size: cover;
+    border-radius: 10px;
+}
+.image_post_1
+{
+    background-image: url('./future_ec_cars.jpeg');
+}
+.image_post_2
+{
+    background-image: url('./maintenance.jpg');
+}
+.image_post_3
+{
+    background-image: url('./luxury.jpeg');
+}
+.about_section {
+    background: var(--bg-gradient), url('./about-background.jpg') no-repeat center center/cover;
+    color: var(--text-light);
+    padding: 5rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.about_section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+}
+
+.about_content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about_content h1 {
+    font-size: 3rem;
+    font-family: var(--font-secondary);
+    margin-bottom: 2rem;
+    position: relative;
+    color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+.about_content h1::after {
+    content: "";
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: var(--accent-color);
+}
+
+.about_content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+    text-align: justify;
+    font-family: var(--font-primary);
+}
+
+.about_content p::first-letter {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.about_content .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-family: var(--font-secondary);
+    text-transform: uppercase;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.about_content .btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+.footer_des i {
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    margin-right: 10px;
+}
