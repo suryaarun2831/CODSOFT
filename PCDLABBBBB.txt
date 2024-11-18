@@ -1,0 +1,559 @@
+Frontend.c 
+
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+int ag = 0, z = 1;
+
+void main() {
+    char a[50], b[50];
+    int ti = 0;
+    int i, j, k, count;
+
+    printf("\nEnter the code: ");
+    scanf("%s", a);
+    strcpy(b, a);
+    
+    // Handle multiplication and division first
+    for (i = 0; i < strlen(b); i++) {
+        if (b[i] == '*' || b[i] == '/') {
+            for (j = i - 1; j >= 0 && b[j] != '+' && b[j] != '-' && b[j] != '='; j--);
+            k = j + 1;
+            count = 0;
+            printf("\nt%d = ", ti++);
+            for (j = j + 1; count < 2 && b[j] != '\0'; j++) {
+                if (b[j + 1] == '+' || b[j + 1] == '-' || b[j + 1] == '*' || b[j + 1] == '/') {
+                    count++;
+                }
+                printf("%c", b[j]);
+            }
+            b[k++] = 't';
+            b[k++] = ti - 1 + '0';
+            for (j = j, k = k; k < strlen(b); k++, j++) {
+                b[k] = b[j];
+            }
+            b[k] = '\0'; // Null terminate the new string
+            i = 0; // Restart the loop
+        }
+    }
+
+    // Handle addition and subtraction
+    for (i = 0; i < strlen(b); i++) {
+        if (b[i] == '+' || b[i] == '-') {
+            for (j = i - 1; j >= 0 && b[j] != '+' && b[j] != '-' && b[j] != '='; j--);
+            k = j + 1;
+            count = 0;
+            printf("\nt%d = ", ti++);
+            for (j = j + 1; count < 2 && b[j] != '\0'; j++) {
+                if (b[j + 1] == '+' || b[j + 1] == '-') {
+                    count++;
+                }
+                printf("%c", b[j]);
+            }
+            b[k++] = 't';
+            b[k++] = ti - 1 + '0';
+            for (j = j, k = k; k < strlen(b); k++, j++) {
+                b[k] = b[j];
+            }
+            b[k] = '\0';
+            i = 0;
+        }
+    }
+
+    printf("\nFinal output: %s\n", b);
+}
+
+/*
+    d=(a-b)+(a+c)+b*c
+*/
+-----------------------------------------------------------------------------
+Shift Reduce Parser
+
+#include<stdio.h>
+#include<string.h>
+
+struct stack {
+    char s[20];
+    int top;
+};
+
+struct stack st;
+int isempty() {
+    return (st.top == 1);
+}
+void push(char p) {
+    st.s[st.top++] = p;
+}
+char pop() {
+    if (isempty())
+        printf("Stack empty\n");
+    else
+        return st.s[--st.top];
+}
+void disp() {
+    int i;
+    for (i = 0; i < st.top; i++)
+        printf("%c", st.s[i]);
+}
+int reduce(int *j, char rp[10][10], int n) {
+    int i, t, k;
+    char u[10];
+    t = st.top - 1;
+    for (i = 0; i <= st.top; i++) {
+        u[i] = st.s[t];
+        u[i+1] = '\0';
+        for (k = 0; k < n; k++) {
+            if (strcmp(rp[k], u) == 0) {
+                st.top = st.top - i - 1;
+                return k;
+            }
+        }
+        t--;
+    }
+    return 99; 
+}
+int shift(char ip[], int *j) {
+    push(ip[*j]);
+    (*j)++;
+    disp();
+    return 1;
+}
+
+int main() {
+    int n, i, j = 0, k, h;
+    char lp[10];
+    char ip[10];
+    char rp[10][10];
+
+    st.top = 0;
+    printf("\nEnter the number of productions: ");
+    scanf("%d", &n);
+    for (i = 0; i < n; i++) {
+        printf("\nEnter the left side of production %d: ", i + 1);
+        scanf(" %c", &lp[i]);
+        printf("\nEnter the right side of production %d: ", i + 1);
+        scanf("%s", rp[i]);
+    }
+
+  
+    printf("\nEnter the input: ");
+    scanf("%s", ip);
+
+    printf("============================================================\n");
+    printf("STACK\t\tINPUT\t\tOUTPUT\n");
+    printf("============================================================\n");
+
+    strcat(ip, "$"); 
+    push('$'); 
+    printf("$\t\t%s\n", ip);
+
+    while (!(st.s[st.top-1] == lp[0] && st.s[st.top-2] == '$' && (j == (strlen(ip) - 1)) && st.top == 2)) {
+        if ((h = reduce(&j, rp, n)) != 99) {
+            push(lp[h]);
+            disp();
+            printf("\t\t\t");
+            for (k = j; k < strlen(ip); k++)
+                printf("%c", ip[k]);
+            printf("\t\t\tReduce %c->%s\n", lp[h], rp[h]);
+        } 
+        else if (shift(ip, &j)) {
+            printf("\t\t\t");
+            for (k = j; k < strlen(ip); k++)
+                printf("%c", ip[k]);
+            printf("\t\t\tshift %c\n", ip[j - 1]);
+        }
+    }
+    disp();
+    printf("\t\t\t");
+    for (k = j; k < strlen(ip); k++)
+        printf("%c", ip[k]);
+    printf("\t\t\taccept\n");
+
+    return 0;
+}
+
+/*
+    Enter the number of productions: 3
+
+Enter the left side of production 1: E
+
+Enter the right side of production 1: E+E
+
+Enter the left side of production 2: E
+
+Enter the right side of production 2: E*E
+
+Enter the left side of production 3: E
+
+Enter the right side of production 3: i
+
+Enter the input: i+i*i
+*/
+
+-------------------------------------------------------------------------------
+Code Optimizer
+
+#include <stdio.h>
+#include <string.h>
+
+struct op {
+    char l;         // Left operand
+    char r[20];    // Right operand
+} op[10], pr[10]; // Arrays to hold operations and optimized results
+
+void main() {
+    int a, i, k, j, n, z = 0, m, q;
+    char *p, *l, *tem, temp, t;
+    char nu[] = "\0"; // Null string for empty initialization
+
+    printf("\nEnter the number of values: ");
+    scanf("%d", &n);
+
+    // Input operations
+    for (i = 0; i < n; i++) {
+        printf("\nLeft: ");
+        scanf(" %c", &op[i].l); // Read a single character for left operand
+        printf("Right: ");
+        scanf("%s", op[i].r);    // Read the right operand as a string
+    }
+
+    printf("\nIntermediate code:\n");
+    for (i = 0; i < n; i++) {
+        printf("%c = %s\n", op[i].l, op[i].r); // Print intermediate code
+    }
+
+    // Dead code elimination
+    for (i = 0; i < n; i++) {
+        temp = op[i].l;
+        p = NULL;
+        for (j = 0; j < n; j++) {
+            p = strchr(op[j].r, temp);
+            if (p) {
+                pr[z].l = op[i].l;
+                strcpy(pr[z].r, op[i].r);
+                z++;
+                break;
+            }
+        }
+    }
+
+    printf("\nAfter dead code elimination:\n");
+    for (k = 0; k < z; k++) {
+        printf("%c = %s\n", pr[k].l, pr[k].r); // Print after dead code elimination
+    }
+
+    // Eliminate common expressions
+    for (m = 0; m < z; m++) {
+        tem = pr[m].r;
+        for (j = m + 1; j < z; j++) {
+            p = strstr(tem, pr[j].r);
+            if (p) {
+                pr[j].l = pr[m].l;
+                for (i = 0; i < z; i++) {
+                    if (l) {
+                        a = l - pr[i].r;
+                        pr[i].r[a] = pr[m].l; // Update based on common expression
+                    }
+                }
+            }
+        }
+    }
+
+    printf("\nEliminate common expression:\n");
+    for (i = 0; i < z; i++) {
+        printf("%c = %s\n", pr[i].l, pr[i].r); // Print after eliminating common expressions
+    }
+
+    // Final optimization
+    for (i = 0; i < z; i++) {
+        for (j = i + 1; j < z; j++) {
+            q = strcmp(pr[i].r, pr[j].r);
+            if ((pr[i].l == pr[j].l) && !q) {
+                pr[i].l = '\0';          // Mark for elimination
+                strcpy(pr[i].r, nu);     // Clear the right operand
+            }
+        }
+    }
+
+    printf("\nOptimized code:\n");
+    for (i = 0; i < z; i++) {
+        if (pr[i].l != '\0') {
+            printf("%c = %s\n", pr[i].l, pr[i].r); // Print the final optimized code
+        }
+    }
+}
+
+/*Enter the number of values: 5
+
+Left: a
+Right: 10
+
+Left: b
+Right: 20
+
+Left: c
+Right: a+b
+
+Left: d
+Right: a+b
+
+Left: e
+Right: a+d*/
+-----------------------------------------------------------------------------------
+Symbol table 
+
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+struct symtab {
+    int lineno;
+    char var[25], dt[25], val[10];
+} sa[20];
+
+void parseInput(char* input, int* line, int* i) {
+    char *token, typ[25], gar[] = "garbage";
+    token = strtok(input, " ,=;");
+    if (token != NULL && (strcmp(token, "int") == 0 || strcmp(token, "float") == 0 || strcmp(token, "char") == 0)) {
+        strcpy(typ, token); 
+        (*line)++; 
+        
+        while ((token = strtok(NULL, " ,=;")) != NULL) {
+            (*i)++;
+            strcpy(sa[*i].var, token);
+            strcpy(sa[*i].dt, typ);
+            sa[*i].lineno = *line;
+            token = strtok(NULL, " ,=;");
+            if (token != NULL && strcmp(token, "=") == 0) {
+                token = strtok(NULL, " ,=;");
+                if (token != NULL) {
+                    strcpy(sa[*i].val, token);
+                } else {
+                    strcpy(sa[*i].val, gar);
+                }
+            } else {
+                strcpy(sa[*i].val, gar);
+            }
+        }
+    } else {
+        printf("Invalid input. Please start with a valid data type.\n");
+    }
+}
+
+int main() {
+    int i = 0, line = 0, max;
+    char input[100];
+    printf("\n\nSYMBOL TABLE MANAGEMENT\n\n");
+    printf("Enter variable declarations ");
+    fgets(input, sizeof(input), stdin);
+    parseInput(input, &line, &i);
+    max = i;
+    printf("\nVariable\tDatatype\tLine.no.\tValue\n");
+    for (i = 1; i <= max; i++) {
+        printf("%s\t\t%s\t\t%d\t\t%s\n", sa[i].var, sa[i].dt, sa[i].lineno, sa[i].val);
+    }
+    
+    return 0;
+}
+
+-----------------------------------------------------------------------------------
+Lexical Analyzer
+
+#include <ctype.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LENGTH 100
+
+bool isDelimiter(char chr) {
+    return (chr == ' ' || chr == '+' || chr == '-' || chr == '*' ||
+            chr == '/' || chr == ',' || chr == ';' || chr == '%' ||
+            chr == '>' || chr == '<' || chr == '=' || chr == '(' ||
+            chr == ')' || chr == '[' || chr == ']' || chr == '{' ||
+            chr == '}');
+}
+
+bool isOperator(char chr) {
+    return (chr == '+' || chr == '-' || chr == '*' || chr == '/' ||
+            chr == '>' || chr == '<' || chr == '=');
+}
+
+bool isValidIdentifier(char* str) {
+    return (str[0] != '0' && str[0] != '1' && str[0] != '2' &&
+            str[0] != '3' && str[0] != '4' && str[0] != '5' &&
+            str[0] != '6' && str[0] != '7' && str[0] != '8' &&
+            str[0] != '9' && !isDelimiter(str[0]));
+}
+
+bool isKeyword(char* str) {
+    const char* keywords[] = {"auto", "break", "case", "char", "const", "continue", "default", "do", 
+                              "double", "else", "enum", "extern", "float", "for", "goto", "if", 
+                              "int", "long", "register", "return", "short", "signed", "sizeof", 
+                              "static", "struct", "switch", "typedef", "union", "unsigned", "void", 
+                              "volatile", "while"};
+    for (int i = 0; i < sizeof(keywords) / sizeof(keywords[0]); i++) {
+        if (strcmp(str, keywords[i]) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool isInteger(char* str) {
+    if (str == NULL || *str == '\0') {
+        return false;
+    }
+    int i = 0;
+    while (isdigit(str[i])) {
+        i++;
+    }
+    return str[i] == '\0';
+}
+
+
+char* getSubstring(char* str, int start, int end) {
+    int length = strlen(str);
+    int subLength = end - start + 1;
+    char* subStr = (char*)malloc((subLength + 1) * sizeof(char));
+    strncpy(subStr, str + start, subLength);
+    subStr[subLength] = '\0';
+    return subStr;
+}
+
+// Lexical analyzer function to analyze the input
+int lexicalAnalyzer(char* input) {
+    int left = 0, right = 0;
+    int len = strlen(input);
+
+    while (right <= len && left <= right) {
+        if (!isDelimiter(input[right]))
+            right++;
+
+        if (isDelimiter(input[right]) && left == right) {
+            if (isOperator(input[right]))
+                printf("Token: Operator, Value: %c\n", input[right]);
+
+            right++;
+            left = right;
+        } else if ((isDelimiter(input[right]) && left != right) || (right == len && left != right)) {
+            char* subStr = getSubstring(input, left, right - 1);
+
+            if (isKeyword(subStr))
+                printf("Token: Keyword, Value: %s\n", subStr);
+            else if (isInteger(subStr))
+                printf("Token: Integer, Value: %s\n", subStr);
+            else if (isValidIdentifier(subStr) && !isDelimiter(input[right - 1]))
+                printf("Token: Identifier, Value: %s\n", subStr);
+            else if (!isValidIdentifier(subStr) && !isDelimiter(input[right - 1]))
+                printf("Token: Unidentified, Value: %s\n", subStr);
+
+            left = right;
+        }
+    }
+    return 0;
+}
+
+// Main function
+int main() {
+    char lex_input[MAX_LENGTH];
+
+    printf("Enter an expression to analyze (up to %d characters): ", MAX_LENGTH);
+    fgets(lex_input, MAX_LENGTH, stdin);
+    
+    lex_input[strcspn(lex_input, "\n")] = 0;
+
+    printf("For Expression \"%s\":\n", lex_input);
+    lexicalAnalyzer(lex_input);
+    
+    return 0;
+}
+
+/*a+b+c+d>/*/
+-------------------------------------------------------------------------------------
+Backend. c
+
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+int ag = 0, z = 1;
+
+void main() {
+    char a[50], id[50], mov[] = "MOVF", mul[] = "MULF", div[] = "DIVF", add[] = "ADDF", sub[] = "SUBF";
+    int i = 0, j = 0, len = 0, s = 0, e = 0, r = 1;
+
+    printf("\nEnter the code: ");
+    gets(a); // Note: 'gets' is unsafe; consider using 'fgets' in production code.
+    len = strlen(a);
+
+    for (i = 0; i < len; i++) {
+        if (a[i] == '=') {
+            for (j = i + 1; j < len; j++) {
+                if (a[j] == 'i') { // Assuming 'i' is part of an identifier (e.g., 'id1')
+                    printf("\n%s ", mov);
+                    printf("%c%c%c, R%d", a[j], a[j + 1], a[j + 2], r++);
+                }
+            }
+        } else if (isdigit(a[i])) {
+            if (isdigit(a[i + 1])) {
+                printf("\n%s #%c%c, R%d", mov, a[i], a[i + 1], r++);
+            }
+        }
+    }
+
+    // Traverse in reverse to handle operations
+    for (i = len - 1; i >= 0; i--) {
+        if (a[i] == '+') {
+            printf("\n%s ", add);
+            e = a[i - 1];
+            e--;
+            s = e;
+            if (a[i + 1] == 'i') {
+                printf("R%c, R%d", e, r - 1);
+            }
+        } else if (a[i] == '-') {
+            printf("\n%s ", sub);
+            e = a[i - 1];
+            e--;
+            s = e;
+            if (a[i + 1] == 'i') {
+                printf("R%c, R%c", (a[i + 3] - 1), s);
+            } else {
+                printf("R%c, R%d", e, r - 1);
+            }
+        } else if (a[i] == '*') {
+            printf("\n%s ", mul);
+            e = a[i - 1];
+            e--;
+            s = e;
+            if (a[i + 1] == 'i') {
+                printf("R%c, R%c", (a[i + 3] - 1), s);
+            } else {
+                printf("R%c, R%d", e, r - 1);
+            }
+        } else if (a[i] == '/') {
+            printf("\n%s ", div);
+            e = a[i - 1];
+            e--;
+            s = e;
+            if (a[i + 1] == 'i') {
+                printf("R%c, R%c", (a[i + 3] - 1), s);
+            } else {
+                printf("R%c, R%d", e, r - 1);
+            }
+        }
+    }
+    
+    printf("\n%s R1, id1", mov);
+}
+
+/*
+    id1=id2*id3+id4
+*/
+
+------------------------------------------------------------------------------------
+
